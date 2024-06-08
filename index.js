@@ -11,10 +11,9 @@ const orderRoutes = require('./routes/order');
 const app = express();
 const port = process.env.PORT || 4005;
 
-mongoose.connect(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-}).then(() => {
+console.log("Starting server...");
+
+mongoose.connect(process.env.MONGODB_URI).then(() => {
   console.log("Connected to MongoDB");
 }).catch(error => {
   console.error('Error connecting to MongoDB:', error.message);
@@ -36,12 +35,12 @@ app.use("/b5/orders", orderRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
-  console.error(err.stack);
+  console.error('Unhandled error:', err);
   res.status(500).send('Something broke!');
 });
 
 if (require.main === module) {
-  app.listen(process.env.PORT || port, () => console.log(`API is now online on port ${process.env.PORT || port}`));
+  app.listen(port, () => console.log(`API is now online on port ${port}`));
 }
 
-module.exports = { app, mongoose };
+module.exports = app;  // Ensure the export is correct for Vercel
