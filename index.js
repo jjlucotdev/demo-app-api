@@ -33,7 +33,10 @@ app.use("/b5/products", productRoutes);
 app.use("/b5/cart", cartRoutes);
 app.use("/b5/orders", orderRoutes);
 
-// Error handling middleware
+app.get('/', (req, res) => {
+  res.send('Welcome to the API. Available endpoints are: /b5/users, /b5/products, /b5/cart, /b5/orders');
+});
+
 app.use((err, req, res, next) => {
   console.error('Unhandled error:', err);
   res.status(500).send('Something broke!');
@@ -43,4 +46,4 @@ if (require.main === module) {
   app.listen(port, () => console.log(`API is now online on port ${port}`));
 }
 
-module.exports = app;  // Ensure the export is correct for Vercel
+module.exports = app;  
